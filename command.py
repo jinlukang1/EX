@@ -1,5 +1,6 @@
 # coding:utf-8
 
+import os
 import time
 import random
 
@@ -39,7 +40,7 @@ NUM_list = [["京", "津", "冀", "晋", "蒙", "辽", "吉", "黑", "沪", "苏
 "5", "6", "7", "8", "9", "0"], ["冰雹", "暴雪", "大雪", "小雪", "大雨", "小雨", "大雾", "小雾"], 
 ["SUV", "黑色小轿车", "红色小轿车", "出租车"], ["手持", "卡口", "车载", "安防监控", "无人机俯视"]]
 
-
+txtPath = "G:/txtrec/"
 
 class ModifiedFile:
 
@@ -61,9 +62,13 @@ class ModifiedFile:
 def Num_random(FileToSave, Num = [], Num_range = []):#随机并进行随机数据的储存
 	for i in range(10):
 		Num[i].WriteCon(str(random.randint(0, Num_range[i]-1)))
+
 	for j in range(10):
 		FileToSave.write(NUM_list[j][int(Num[j].ReadCon())])
 		FileToSave.write(" ")
+
+
+
 
 RecordFile = open('G:/Record.txt', 'a')
 
@@ -82,8 +87,18 @@ Num.append(ModifiedFile("G:/Camera_set.txt"))
 
 Num_range = [31, 26, 34, 34, 34, 34, 34, 8, 4, 5]#设定每个字符随机范围
 
+i = 1
 for j in range(10000):#设定产生数据次数
 	Num_random(RecordFile, Num, Num_range)
+	
+	txtFile = open(txtPath + str(i).zfill(5) + ".txt","w")
+
+	for k in range(10):
+		txtFile.write(Num[k].ReadCon())
+		txtFile.write('\n')
+
 	time.sleep(1)#修改间隔时间
 	RecordFile.write('\n')
+
+	i+=1
 
