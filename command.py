@@ -2,6 +2,8 @@
 
 import time
 import random
+import shutil
+
 
 '''
 字符一对应范围（Num_1.txt-Num_7.txt）
@@ -17,6 +19,7 @@ import random
 25-1, 26-2, 27-3, 28-4, 29-5, 30-6, 31-7, 32-8, 33-9, 34-0.
 天气对应范围（Weather.txt)
 1-冰雹, 2-暴雪, 3-大雪, 4-小雪, 5-大雨, 6-小雨, 7-大雾, 8-小雾。
+["冰雹", "暴雪", "大雪", "小雪", "大雨", "小雨", "大雾", "小雾"]
 汽车类型变化范围（Car_type.txt）
 1-SUV, 2-黑色小轿车, 3-红色小轿车, 4-出租车。
 摄像机角度距离变化范围（Camera_set.txt）
@@ -36,11 +39,12 @@ NUM_list = [["京", "津", "冀", "晋", "蒙", "辽", "吉", "黑", "沪", "苏
 "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", 
 "5", "6", "7", "8", "9", "0"], ["A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", 
 "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", 
-"5", "6", "7", "8", "9", "0"], ["冰雹", "暴雪", "大雪", "小雪", "大雨", "小雨", "大雾", "小雾"], 
-["SUV", "黑色小轿车", "红色小轿车", "出租车"], ["手持", "卡口", "车载", "安防监控", "无人机俯视"]]
+"5", "6", "7", "8", "9", "0"], ["灰色小轿车", "红色小轿车", "白色小轿车", "蓝色小轿车", "黄色小轿车", "黑色小轿车"], ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]]
 
-txtPath = "G:/txtrec/"
 
+txtPath = "F:/Car/txtrec/"
+
+#"手持", "卡口", "车载", "安防监控", "无人机俯视",
 class ModifiedFile:
 
 	def __init__(self, FileName):
@@ -48,7 +52,7 @@ class ModifiedFile:
 
 	def ReadCon(self):#读出文件内容
 		fileObject = open(self.FileName, "r")
-		num = fileObject.readline()
+		num = fileObject.read()
 #		print(num)
 		fileObject.close()
 		return num
@@ -59,45 +63,44 @@ class ModifiedFile:
 		fileObject.close()
 
 def Num_random(FileToSave, Num = [], Num_range = []):#随机并进行随机数据的储存
-	for i in range(10):
+	for i in range(9):
 		Num[i].WriteCon(str(random.randint(0, Num_range[i]-1)))
-
-	for j in range(10):
+	for j in range(9):
 		FileToSave.write(NUM_list[j][int(Num[j].ReadCon())])
+		print NUM_list[j][int(Num[j].ReadCon())].decode('utf-8')
 		FileToSave.write(" ")
 
-
-
-
-RecordFile = open('G:/Record.txt', 'a')
+RecordFile = open('F:/Car/Record.txt', 'w')
 
 Num = []
-Num.append(ModifiedFile("G:/Num_1.txt"))
-Num.append(ModifiedFile("G:/Num_2.txt"))
-Num.append(ModifiedFile("G:/Num_3.txt"))
-Num.append(ModifiedFile("G:/Num_4.txt"))
-Num.append(ModifiedFile("G:/Num_5.txt"))
-Num.append(ModifiedFile("G:/Num_6.txt"))
-Num.append(ModifiedFile("G:/Num_7.txt"))
-Num.append(ModifiedFile("G:/Weather.txt"))
-Num.append(ModifiedFile("G:/Car_type.txt"))
-Num.append(ModifiedFile("G:/Camera_set.txt"))
+Num.append(ModifiedFile("F:/Car/Num_1.txt"))
+Num.append(ModifiedFile("F:/Car/Num_2.txt"))
+Num.append(ModifiedFile("F:/Car/Num_3.txt"))
+Num.append(ModifiedFile("F:/Car/Num_4.txt"))
+Num.append(ModifiedFile("F:/Car/Num_5.txt"))
+Num.append(ModifiedFile("F:/Car/Num_6.txt"))
+Num.append(ModifiedFile("F:/Car/Num_7.txt"))
+#Num.append(ModifiedFile("F:/Car/Weather.txt"))
+Num.append(ModifiedFile("F:/Car/Car_type.txt"))
+Num.append(ModifiedFile("F:/Car/Camera_set.txt"))
 
 
-Num_range = [31, 26, 34, 34, 34, 34, 34, 8, 4, 5]#设定每个字符随机范围
+Num_range = [31, 26, 34, 34, 34, 34, 34, 6, 10]#设定每个字符随机范围
 
 i = 1
-for j in range(10000):#设定产生数据次数
+for j in range(2000):#设定产生数据次数
 	Num_random(RecordFile, Num, Num_range)
-	
+
 	txtFile = open(txtPath + str(i).zfill(5) + ".txt","w")
 
-	for k in range(10):
+	for k in range(9):
 		txtFile.write(Num[k].ReadCon())
 		txtFile.write('\n')
 
-	time.sleep(1)#修改间隔时间
-	RecordFile.write('\n')
+	txtFile.close()
 
 	i+=1
+
+	time.sleep(6)#修改间隔时间
+	RecordFile.write('\n')
 
